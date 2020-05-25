@@ -1,0 +1,144 @@
+<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0  d-flex flex-row">
+
+    <div class="navbar-menu-wrapper d-flex align-items-stretch" style="width:100%; background-color: #01579b; height: 45px; ">
+        <a class="navbar-brand brand-logo" href="javascript://">
+            <img style="width: 35px; height: 35px; " src="./assets/images/iconQ4U100.png" alt=""></a>
+        <span style="font-size: 2.3rem; color: #fff;">
+            คิวรอรับบริการ รพ.ยางตลาด <i class="mdi mdi-play" style="font-size: 2rem;"></i>
+        </span> <span style="cursor: pointer; font-size: 2.3rem; color: #fff; margin-left: 10px;"
+            (click)="selectServicePoint()">
+            {{servicePointName || 'เลือกจุดบริการ'}}</span>
+
+        <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item d-none d-lg-block full-screen-link">
+                <a class="nav-link" href="javascript://"><i style="cursor: pointer;" *ngIf="isSound"
+                        (click)="toggleSound()" class="text-danger mdi mdi-bell-ring"
+                        style="color: #fff !important;"></i>
+
+                    <i style="cursor: pointer;" *ngIf="!isSound" (click)="toggleSound()"
+                        class="text-muted mdi mdi-bell-off" style="color: #fff !important;"></i></a>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
+                <a class="nav-link" href="javascript://" routerLink="/admin/dashboard">
+                    <i class="mdi mdi-home text-success" style="color: #fff !important;"></i>
+                </a>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
+                <a class="nav-link" appToggleFullscreen href="javascript://">
+                    <i class="mdi mdi-fullscreen text-primary" style="color: #fff !important;"></i>
+                </a>
+            </li>
+            <li class="nav-item d-none d-lg-block full-screen-link">
+                <a class="nav-link" (click)="logout()" href="javascript://">
+                    <i class="mdi mdi-power text-danger" style="color: #fff !important;"></i>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    
+    <div class="row">
+        <div class="col-md-5" style="z-index: -100;">
+            <div
+                style=" margin-right: -10px; margin-top:15px; margin-left:-20px; border-right: solid 1px #B2BEC3; border-bottom: solid 1px #B2BEC3; ">
+                <iframe id="vdo" src="http://172.16.46.15/vdo/" frameborder="0" scrolling="no"
+                    style="  padding-right:10px; width:100%;  border-radius: 0px !important; margin-bottom: 5px;"></iframe>
+            </div>
+        </div>
+        <div class="col-md-3" style="z-index: -100;  border-right: solid 1px #B2BEC3;">
+            <div class="row" style="z-index: 99999;">
+                <div class="col-md-12" style="border-bottom: solid 1px #B2BEC3; margin-bottom: 10px; color: #01579b;">
+                    <div class="row">
+                        <div class="col-md-7" style="padding: 0;">
+                            <span style="font-size: 3rem; "><b>คิวรอเรียก</b></span>
+                        </div>
+                        <div class="col-md-5" align="right" style="padding: 0 10px 0 0;">
+                            <span style="font-size: 3rem; "><b>เวลารอ</b></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12" *ngFor="let item of workingWaitQ; let idx = index;"
+                    style="border-bottom: solid #fff 5px; ">
+                    <div class="row bg-primary text-white" >
+                        <div class="col-md-3" >
+                            <span class="font-weight-bold"
+                                style="letter-spacing: 1px; font-size: 4rem; ">
+                                {{ item.queue_number }}
+                            </span>
+                        </div>
+                        <div class="col-md-9" style="text-align: right;  ">
+                            <span class="font-weight-bold" style="font-size: 3.2rem;">
+                              
+                                <countdown [config]="{ leftTime:  item.timewait, format: 'm:s' }">$!h!:$!m!:$!s!</countdown>
+                                
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+
+            <div class="row" style="z-index: 99999;">
+                <div class="col-md-12" style="border-bottom: solid 1px #B2BEC3; margin-bottom: 10px; color:#028910; ">
+                    <div class="row">
+                        <div class="col-md-6" style="padding: 0;">
+                            <span style="margin-left:5px; font-size: 3rem; "><b>คิวบริการ</b></span>
+                        </div>
+                        <div class="col-md-6" align="right" style="padding: 0 10px 0 0;">
+                            <span style="font-size: 3rem; "><b>จุดบริการ</b></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12" *ngFor="let item of workingItems; let idx = index;"
+                    style="border-bottom: solid #fff 5px;">
+                    <div [ngClass]="{'invalid-blink': item.queue_number===currentQueueNumber}"
+                        class="row text-white" style="background-color: #028910; ">
+                        <div class="col-md-3">
+                            <span class="font-weight-bold"
+                                style="letter-spacing: 1px; font-size: 5rem; ">
+                                {{ item.queue_number || '-' }}
+                            </span>
+                        </div>
+                        <div class="col-md-9" style="text-align: right;">
+                            <span class="font-weight-bold" style="font-size: 4.7rem;">
+                                {{ item.splittedRoomName }}{{ item.room_number || '-' }} 
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<div style="position: fixed; z-index: -1; left: 0;  bottom: 0;  width: 100%; background-color: #01579b ; height: 45px;   color: white; text-align: center;">
+    <div class="row">
+        <div class="col-md-8">
+            <marquee direction="left" speed="normal" behavior="loop" style=" font-size: 2.3rem; width: 100%;">บริการดี เชื่อถือได้
+                ภาคภูมิใจในองค์กร ยินดีต้อนรับเข้าสู่ โรงพยาบาลยางตลาด | www.yth.go.th </marquee>
+        </div>
+        <div class="col-md-4">
+            <div style="font-size: 2.3rem;"> <i style="font-size: 1.7rem;" class="mdi mdi-calendar"></i> {{dateTH}} <i style="font-size: 1.7rem;" class="mdi mdi-alarm"></i> {{date   | date: "HH:mm:ss"}}</div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<app-modal-select-servicepoints (onSelected)="onSelectedPoint($event)" #mdlServicePoint>
+</app-modal-select-servicepoints>
